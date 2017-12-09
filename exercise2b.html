@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<title>D3jNotebook - exercise 2</title>
+</head>
+<style>
+.chartish div {
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+}
+</style>
+<body>
+	<div class="chart chartish"></div>
+	
+</body>
+<script>
+
+	let data =Array.from((Array(100)).keys());
+
+	var x = d3.scaleLinear()
+    	.domain([0, d3.max(data)])
+    	.range([0, 600]);
+
+	d3.select(".chart")
+		.selectAll("div")
+  		.data(data)
+    	.enter()
+    	.append("div")
+    	.style("width", function(d) { return x((Math.pow(d%10,2)%10)) + "px"; })
+    	.style("hight", "5px");
+
+</script>
+</html>
+</a>

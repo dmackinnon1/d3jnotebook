@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+<!--
+Some exercises from d3j intro: https://d3js.org/#introduction
+Text from Marcus Aurelius, Meditations: http://classics.mit.edu/Antoninus/meditations.2.two.html
+-->
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<title>D3jNotebook - exercise 1</title>
+</head>
+<style>
+</style>
+<body>
+	<div id='header'></div>
+	<p>
+		Begin the morning by saying to thyself, I shall meet with the busy-body, the ungrateful, arrogant, deceitful, envious, unsocial. All these things happen to them by reason of their ignorance of what is good and evil. But I who have seen the nature of the good that it is beautiful, and of the bad that it is ugly, and the nature of him who does wrong, that it is akin to me, not only of the same blood or seed, but that it participates in the same intelligence and the same portion of the divinity, I can neither be injured by any of them, for no one can fix on me what is ugly, nor can I be angry with my kinsman, nor hate him, For we are made for co-operation, like feet, like hands, like eyelids, like the rows of the upper and lower teeth. To act against one another then is contrary to nature; and it is acting against one another to be vexed and to turn away. 
+	</p>
+	<p>
+		Whatever this is that I am, it is a little flesh and breath, and the ruling part. Throw away thy books; no longer distract thyself: it is not allowed; but as if thou wast now dying, despise the flesh; it is blood and bones and a network, a contexture of nerves, veins, and arteries. See the breath also, what kind of a thing it is, air, and not always the same, but every moment sent out and again sucked in. The third then is the ruling part: consider thus: Thou art an old man; no longer let this be a slave, no longer be pulled by the strings like a puppet to unsocial movements, no longer either be dissatisfied with thy present lot, or shrink from the future. 
+	</p>
+	<p>
+		How quickly all things disappear, in the universe the bodies themselves, but in time the remembrance of them; what is the nature of all sensible things, and particularly those which attract with the bait of pleasure or terrify by pain, or are noised abroad by vapoury fame; how worthless, and contemptible, and sordid, and perishable, and dead they are- all this it is the part of the intellectual faculty to observe. To observe too who these are whose opinions and voices give reputation; what death is, and the fact that, if a man looks at it in itself, and by the abstractive power of reflection resolves into their parts all the things which present themselves to the imagination in it, he will then consider it to be nothing else than an operation of nature; and if any one is afraid of an operation of nature, he is a child. This, however, is not only an operation of nature, but it is also a thing which conduces to the purposes of nature. To observe too how man comes near to the deity, and by what part of him, and when this part of man is so disposed
+	</p>
+
+	<div>
+		<p>
+			Remember that all is opinion. For what was said by the Cynic Monimus is manifest: and manifest too is the use of what was said, if a man receives what may be got out of it as far as it is true. 
+		</p>
+		<p>
+			Of human life the time is a point, and the substance is in a flux, and the perception dull, and the composition of the whole body subject to putrefaction, and the soul a whirl, and fortune hard to divine, and fame a thing devoid of judgement. And, to say all in a word, everything which belongs to the body is a stream, and what belongs to the soul is a dream and vapour, and life is a warfare and a stranger's sojourn, and after-fame is oblivion. What then is that which is able to conduct a man? One thing and only one, philosophy. But this consists in keeping the daemon within a man free from violence and unharmed, superior to pains and pleasures, doing nothing without purpose, nor yet falsely and with hypocrisy, not feeling the need of another man's doing or not doing anything; and besides, accepting all that happens, and all that is allotted as coming from thence, wherever it is, from whence he himself came; and, finally, waiting for death with a cheerful mind, as being nothing else than a dissolution of the elements of which every living being is compounded. But if there is no harm to the elements themselves in each continually changing into another, why should a man have any apprehension about the change and dissolution of all the elements? For it is according to nature, and nothing is evil which is according to nature. 
+
+		</p>
+	</div>
+	<div id='addHere'>
+	</div>
+</body>
+<script>
+	let delay = 1000;
+	let randomColours = function() {
+  		return "hsl(" + Math.random() * 360 + ",100%,50%)";
+  	}
+
+	d3.select("body").transition().duration(delay).style("background-color", "black");
+	d3.selectAll("p").transition().duration(2*delay).style("color", randomColours);
+	
+	d3.select("div").transition().duration(delay).style("background-color", "white");
+	
+	d3.select("#addHere").selectAll("p").data([4, 8, 15, 16, 23, 42])
+  		.enter().append("p").text(function(d) { return "I’m number " + d + "!"; });
+
+  	d3.select("#addHere").transition().duration(4*delay).style("background-color", randomColours);	
+	d3.select("#addHere").selectAll("p").transition().duration(3*delay).style("color", randomColours); 
+  	d3.select("#header").selectAll("h1").data([1]).enter().append("h1").text("Exercise 1");
+  	d3.select("#header").selectAll("p").data([1]).enter().append("a").attr("href","https://d3js.org/#introduction").text("D3j Introduction");
+  	
+</script>
+</html>
+</a>

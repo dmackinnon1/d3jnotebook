@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<title>D3jNotebook - exercise 3</title>
+</head>
+<style>
+
+</style>
+<body>
+  <svg width="800" height="800">
+  </svg>
+</body>
+
+<script>
+
+function range(n) {
+  return Array.from((Array(n)).keys()) ;
+};
+
+let total = 50;
+let data = range(total);
+let offset = 400;
+
+let svg = d3.select("svg");
+svg.selectAll("circle")
+    .data(data)
+    .enter().append("circle")
+      .attr("cy", function(d) { return  offset + Math.sqrt(d+1)*Math.sin((d+1)*2*Math.PI/total)*20;})
+      .attr("cx", function(d) { return offset + Math.sqrt(d+1)*Math.cos((d+1)*2*Math.PI/total)*20; })
+      .attr("r", function(d) { return 5; });
+
+svg.selectAll("circle").style("fill", "black");
+
+</script>
+</html>
