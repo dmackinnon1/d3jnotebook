@@ -14,27 +14,44 @@ svg {
   display: block; 
   margin: auto ;
  }
-
-
+.centered {
+  text-align: center;
+}
+form {
+  padding: 5px;
+  font-size: large;
+}
+h1{
+   padding: 10px;
+   padding-top:20px;
+   margin:5px;
+}
 </style>
 <body>
   <h1>Phyllotaxis Spirals </h1>
-  <div class="inputDiv" width ="300">
+  <div class="inputDiv centered" width ="300">
     <form>
       modulo: <input type="number" id="modInput" min="1" max="20" step="1" value="1" onchange="modChange(this)">
     </form>
     <form>
-      dot size: <input type="number" id="sizeInput" min="2" max="20" step="1" value="5" onchange="sizeChange(this)">
+      dot size: <input type="number" id="sizeInput" min="2" max="20" step="1" value="10" onchange="sizeChange(this)">
+    </form>
+    <form>
+      <div class="checkbox">
+        <label><input id="scale" type="checkbox" onchange="scaleChange(this)">scale dots</label>
+      </div>
     </form>
   </div>
   <hr>
+  <div class="centered">
   <svg width="600" height="600"></svg>
+  </div>
   <hr>  
 </body>
 <script>
 
 /*
-* Phyllotaxis spiral, plain.
+* Phyllotaxis spiral, adjustable
 */
 
 function range(n) {
@@ -46,7 +63,7 @@ let total = 400;
 let data = range(total);
 let offset = 600/2;
 let dotSize = 10;
-
+let dotGrow = false;
 //creating the dots
 let svg = d3.select("svg");
 svg.selectAll("circle")
@@ -58,19 +75,24 @@ svg.selectAll("circle")
 
 //setup of coloring based on mod selection
 let modValue = 1;
-let sizeValue = 5;
 function colorDots() {
     let svg2 = d3.select("svg");
     svg2.selectAll("circle")
       .data(data).style("fill", function(d) {
         if (d%modValue === 0) {
-        return 'black';
+          return 'black';
         } else {
           return 'grey';
         }
-      }).attr("r", sizeValue);
-}
-
+      }).attr("r", function(d) { 
+          console.log(dotGrow);
+          if(dotGrow) {
+            return ((d + total/2)/total)*dotSize;
+          } else {
+            return dotSize;
+          }
+        });
+};     
 //initial coloring of dots
 colorDots();
 
@@ -81,7 +103,13 @@ function modChange(e) {
 };
 
 function sizeChange(e) {
-    sizeValue = e.value;
+    dotSize = e.value;
+    colorDots();
+};
+
+function scaleChange(e) {
+    dotGrow = e.checked;
+    console.log(dotGrow);
     colorDots();
 };
 
@@ -104,7 +132,5 @@ function radial(n) {
   let d = n + 1;
   return Math.sqrt(d*spacer);
 }
-
-
 </script>
 </html>
