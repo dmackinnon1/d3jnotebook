@@ -18,39 +18,32 @@
 <script>
 
 /*
-* A simple spiral, inspired by exercises https://bost.ocks.org/mike/circles/
-* 
+* Phyllotaxis spiral, plain.
 */
 
-//generates an array of 0 to n.
 function range(n) {
   return Array.from((Array(n)).keys()) ;
 };
 
-// x projection of unit angle t
+function philo(n) {
+  let d = n + 1; 
+  return d*Math.PI*(Math.sqrt(5) +1);
+}
+
 function xComp(t) {
   return Math.cos(t);
 }
 
-// y projection of unit angle t
 function yComp(t) {
   return Math.sin(t);
 }
 
-// magitude to use for given n
 function radial(n) {
   let d = n + 1;
-  return d*2;
+  return Math.sqrt(d*100);
 }
 
-function anglePosition(n) {
-  let d = n + 1;
-  let denom = total/2;
-  return Math.PI*2*d/denom;
-}
-
-
-let total = 100;
+let total = 500;
 let data = range(total);
 let offset = 400;
 let dotSize = 6;
@@ -59,11 +52,11 @@ let svg = d3.select("svg");
 svg.selectAll("circle")
     .data(data)
     .enter().append("circle")
-      .attr("cy", function(d) { return  offset + radial(d)*xComp(anglePosition(d))})
-      .attr("cx", function(d) { return offset + radial(d)*yComp(anglePosition(d))})
+      .attr("cy", function(d) { return  offset + radial(d)*xComp(philo(d))})
+      .attr("cx", function(d) { return offset + radial(d)*yComp(philo(d))})
       .attr("r", function(d) { return dotSize; });
 
-svg.selectAll("circle").style("fill", "black");
+svg.selectAll("circle").style("fill", "grey");
 
 </script>
 </html>
