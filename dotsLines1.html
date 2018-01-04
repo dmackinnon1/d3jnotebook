@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<title>D3jNotebook - Dots and Lines 1 graphs</title>
+</head>
+<style>
+
+svg {
+  display: block; 
+  margin: auto ;
+ }
+.centered {
+  text-align: center;
+}
+
+h1{
+   padding-left: 10px;
+   padding-top:20px;
+   margin:5px;
+}
+.inputDiv {
+	text-align: left;
+  padding: 3px;
+  font-size: large;
+  padding-left: 20px;
+}
+
+</style>
+<body>
+  <h1>Dots and Lines 1</h1>
+  <div class="inputDiv" width ="500">
+    <form>
+      lines: 
+      	<input type="number" id="lineCount_input" min="0" max="1000" 
+          step="1" value="60" onchange="lineCountChange(this)">
+    </form>
+    <br>
+    <button class="btn btn-primary" onclick="randomShift(this)">random shift</button>
+  </div>
+  <hr>
+  <div class="centered">
+  <svg width="500" height="500"></svg>
+  </div>
+  <hr>  
+</body>
+<script>
+
+/*
+* Just some generative art.
+*/
+
+class Vertex {
+	constructor(x,y,id) {
+		this.x = x;
+		this.y = y;
+    this.id = id;
+	}
+}
+
+function range(n) {
+  return Array.from((Array(n)).keys()) ;
+}
+
+let offset = 500/2; //shift into the center
+let lineSize = 1; //initial line size
+let radius = 225;
+let lineCount = 60; //inital line count
+
+let data = [];
+
+function initData(){
+  for (i in range(lineCount)){
+    data.push([randomVertex(i), randomVertex(i)]);
+  }
+}
+
+function randomInt(lessThan){
+  return Math.floor(Math.random()*lessThan);
+}
+
+function randomAngle() {
+	let max = 1000;
+  return Math.PI*randomInt(max)*2/max;
+}
+
+function randomVertex(id) {
+  let alpha = randomAngle();
+	let x = offset + radius*Math.cos(alpha);
+	let y = offset + radius*Math.sin(alpha);
+	return new Vertex(x,y,id);
+}
+
+function drawBigDot() {
+  d3.select("svg").append("circle")
+      .attr("cx", offset)
+      .attr("cy", offset)
+      .attr("r", radius)
+      .attr("fill", "black")
+}
+
+function drawRandomLines() {
+	
+  let line = d3.select("svg").selectAll("line")
+    .data(data, function(d){
+      return d[0].id;});
+
+  line.exit().remove();
+
+  line.transition(line)
+    .attr("x1", function(d){return d[0].x;})
+    .attr("y1", function(d){return d[0].y;})
+    .attr("x2", function(d){return d[1].x;})
+    .attr("y2", function(d){return d[1].y;});
+   
+  line.enter().append("line")
+    .attr("x1", function(d){return d[0].x;})
+    .attr("y1", function(d){return d[0].y;})
+    .attr("x2", function(d){return d[1].x;})
+    .attr("y2", function(d){return d[1].y;})
+    .attr("style",function(d){ return "stroke:white;stroke-width:" + (randomInt(6)+1);})
+    .attr("onmouseover","this.setAttribute('opacity', '0.5')")
+    .attr("onmouseout","this.setAttribute('opacity', '1')")    		
+    .attr("stroke-linecap","round");
+}
+
+
+function lineCountChange(event) {
+    lineCount = event.value
+    
+    if(lineCount >= data.length) {
+      for (var i = data.length; i < lineCount; i++){
+        data.push([randomVertex(i), randomVertex(i)]);     
+      }
+    } else {
+      let max = data.length
+      for (var i = lineCount; i < max; i++){
+        data.pop();     
+      }
+    }
+    drawRandomLines();
+}     
+
+function randomShift(event) {
+  randomTargetShift();
+  drawRandomLines();
+}
+
+function randomTargetShift() {
+  let i = 0;
+  for (i in data){
+    data[i][1] = randomVertex(i);
+  }
+}
+
+function drawAll() {
+  drawBigDot();
+  initData();
+  drawRandomLines();
+}
+
+
+drawAll();
+
+</script>
+</html>
