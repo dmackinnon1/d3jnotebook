@@ -1,3 +1,3 @@
 # d3jnotebook
 
-A repo for d3j exercises and experiments.
+A repo for D3 exercises and experiments.
